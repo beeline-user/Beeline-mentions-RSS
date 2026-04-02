@@ -171,8 +171,12 @@ def main():
     processed = 0
 
     for product, feed_url in FEEDS.items():
-        feed = feedparser.parse(feed_url)
+        feed = feedparser.parse(
+            feed_url,
+            request_headers={"User-Agent": "Mozilla/5.0 (compatible; FeedFetcher/1.0)"}
+        )
 
+        print(f"{product}: {len(feed.entries)} entries found")
         if feed.bozo:
             print(f"Warning: feed parse issue for {product}: {feed.bozo_exception}")
 
