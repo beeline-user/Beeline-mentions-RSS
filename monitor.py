@@ -171,10 +171,19 @@ def main():
     processed = 0
 
     for product, feed_url in FEEDS.items():
-        feed = feedparser.parse(
+        response = requests.get(
             feed_url,
-            request_headers={"User-Agent": "Mozilla/5.0 (compatible; FeedFetcher/1.0)"}
+            headers={
+                "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-GB,en;q=0.9",
+                "Accept-Encoding": "gzip, deflate, br",
+                "Cache-Control": "no-cache",
+            },
+            timeout=15,
         )
+        print(f"{product}: HTTP {response.status_code}")
+        feed = feedparser.parse(response.content)
 
         print(f"{product}: {len(feed.entries)} entries found")
         if feed.bozo:
