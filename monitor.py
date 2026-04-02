@@ -186,6 +186,8 @@ def main():
         feed = feedparser.parse(response.content)
 
         print(f"{product}: {len(feed.entries)} entries found")
+        if len(feed.entries) == 0:
+            print(f"{product} raw response (first 300 chars): {response.text[:300]}")
         if feed.bozo:
             print(f"Warning: feed parse issue for {product}: {feed.bozo_exception}")
 
